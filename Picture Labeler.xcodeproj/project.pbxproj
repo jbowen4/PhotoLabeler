@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		27C4755DA8192FB979D8A154 /* Pods_Picture_Labeler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98B0EA116AFAA50AB9297D5E /* Pods_Picture_Labeler.framework */; };
 		D093751D23C6AEAB00F9CE44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093751C23C6AEAB00F9CE44 /* AppDelegate.swift */; };
 		D093751F23C6AEAB00F9CE44 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093751E23C6AEAB00F9CE44 /* SceneDelegate.swift */; };
 		D093752123C6AEAB00F9CE44 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093752023C6AEAB00F9CE44 /* HomeViewController.swift */; };
@@ -21,6 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1B61186A1280B7D990B762CF /* Pods-Picture Labeler.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Picture Labeler.debug.xcconfig"; path = "Target Support Files/Pods-Picture Labeler/Pods-Picture Labeler.debug.xcconfig"; sourceTree = "<group>"; };
+		87BAF46399B14310AF51CF10 /* Pods-Picture Labeler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Picture Labeler.release.xcconfig"; path = "Target Support Files/Pods-Picture Labeler/Pods-Picture Labeler.release.xcconfig"; sourceTree = "<group>"; };
+		98B0EA116AFAA50AB9297D5E /* Pods_Picture_Labeler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Picture_Labeler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D093751923C6AEAB00F9CE44 /* Picture Labeler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Picture Labeler.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D093751C23C6AEAB00F9CE44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D093751E23C6AEAB00F9CE44 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -41,17 +45,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27C4755DA8192FB979D8A154 /* Pods_Picture_Labeler.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		46868766215D723ED0D94414 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				98B0EA116AFAA50AB9297D5E /* Pods_Picture_Labeler.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7387151D0B981E466E7BA4E7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1B61186A1280B7D990B762CF /* Pods-Picture Labeler.debug.xcconfig */,
+				87BAF46399B14310AF51CF10 /* Pods-Picture Labeler.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		D093751023C6AEAB00F9CE44 = {
 			isa = PBXGroup;
 			children = (
 				D093751B23C6AEAB00F9CE44 /* Picture Labeler */,
 				D093751A23C6AEAB00F9CE44 /* Products */,
+				7387151D0B981E466E7BA4E7 /* Pods */,
+				46868766215D723ED0D94414 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -113,9 +138,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D093753023C6AEAC00F9CE44 /* Build configuration list for PBXNativeTarget "Picture Labeler" */;
 			buildPhases = (
+				E5F223B34CF80AFDBBD4D2CE /* [CP] Check Pods Manifest.lock */,
 				D093751523C6AEAB00F9CE44 /* Sources */,
 				D093751623C6AEAB00F9CE44 /* Frameworks */,
 				D093751723C6AEAB00F9CE44 /* Resources */,
+				FC34DE54F58C549D89EC1FB2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -171,6 +198,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E5F223B34CF80AFDBBD4D2CE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Picture Labeler-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FC34DE54F58C549D89EC1FB2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Picture Labeler/Pods-Picture Labeler-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Picture Labeler/Pods-Picture Labeler-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Picture Labeler/Pods-Picture Labeler-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D093751523C6AEAB00F9CE44 /* Sources */ = {
@@ -326,6 +395,7 @@
 		};
 		D093753123C6AEAC00F9CE44 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1B61186A1280B7D990B762CF /* Pods-Picture Labeler.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -344,6 +414,7 @@
 		};
 		D093753223C6AEAC00F9CE44 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 87BAF46399B14310AF51CF10 /* Pods-Picture Labeler.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
