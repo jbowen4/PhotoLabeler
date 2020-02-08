@@ -82,6 +82,9 @@
                                 <state key="normal" title="Button">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="chooseImages:" destination="QtM-0g-QeV" eventType="touchUpInside" id="yDr-V7-hE1"/>
+                                </connections>
                             </button>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="CUy-nB-Ob9">
                                 <rect key="frame" x="0.0" y="88" width="414" height="44"/>
@@ -120,6 +123,70 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7hT-10-fJx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="994.20289855072474" y="-622.09821428571422"/>
+        </scene>
+        <!--Image Save Controller-->
+        <scene sceneID="bjw-Sv-HGS">
+            <objects>
+                <viewController storyboardIdentifier="imageSave" id="Bpa-Pr-djC" customClass="ImageSaveController" customModule="Picture_Labeler" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3HU-Vu-cRD">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W8y-dY-axc">
+                                <rect key="frame" x="40" y="215" width="335" height="466"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lU7-DZ-k30">
+                                        <rect key="frame" x="47" y="403" width="48" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Cancel"/>
+                                        <connections>
+                                            <action selector="cancel:" destination="Bpa-Pr-djC" eventType="touchUpInside" id="CY4-DZ-MgN"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Ws-fN-6QX">
+                                        <rect key="frame" x="253" y="403" width="34" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Save"/>
+                                        <connections>
+                                            <action selector="save:" destination="Bpa-Pr-djC" eventType="touchUpInside" id="7Ey-Ni-sLK"/>
+                                        </connections>
+                                    </button>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aMf-AU-F2D">
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="282"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <viewLayoutGuide key="contentLayoutGuide" id="GKI-Db-ZzC"/>
+                                        <viewLayoutGuide key="frameLayoutGuide" id="Wg7-M9-y4u"/>
+                                    </scrollView>
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3kU-au-2Tm">
+                                        <rect key="frame" x="45" y="334" width="245" height="34"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <pageControl hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="CaO-kg-475">
+                                        <rect key="frame" x="148" y="290" width="39" height="37"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="pageIndicatorTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="currentPageIndicatorTintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </pageControl>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.65869440184049077" alpha="0.74849022239263807" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="QF5-QP-ACX"/>
+                    </view>
+                    <connections>
+                        <outlet property="groupNameField" destination="3kU-au-2Tm" id="bDH-Qj-ISs"/>
+                        <outlet property="imagePageControl" destination="CaO-kg-475" id="C0n-3l-HjZ"/>
+                        <outlet property="imageScrollView" destination="aMf-AU-F2D" id="vqw-FG-xE2"/>
+                        <outlet property="popupView" destination="W8y-dY-axc" id="nF4-Qy-2jw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Akd-tI-zaj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="992.75362318840587" y="58.928571428571423"/>
         </scene>
         <!--Current Album-->
         <scene sceneID="WmR-go-RgT">
@@ -192,12 +259,40 @@
                                     <outlet property="delegate" destination="wBS-gG-pI7" id="FNc-gs-ody"/>
                                 </connections>
                             </collectionView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oRg-qF-Tdy">
+                                <rect key="frame" x="0.0" y="818" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem enabled="NO" systemItem="action" id="cu9-wc-Zux">
+                                        <connections>
+                                            <action selector="sendPhotos:" destination="wBS-gG-pI7" id="gMi-Yn-ibM"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="4A9-k9-amX"/>
+                                    <barButtonItem title="Select" style="plain" id="cUX-2z-LEW">
+                                        <connections>
+                                            <action selector="selectPhotos:" destination="wBS-gG-pI7" id="Db9-5q-Qcy"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="2XA-FJ-QKb"/>
+                                    <barButtonItem enabled="NO" style="plain" systemItem="trash" id="0MO-Cw-WYb">
+                                        <connections>
+                                            <action selector="deletePhotos:" destination="wBS-gG-pI7" id="hEE-ip-o8x"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="s6k-rf-R9n"/>
                     </view>
                     <navigationItem key="navigationItem" title="Current Album" id="Jvg-NB-GrO">
                         <barButtonItem key="backBarButtonItem" title="Back" id="8W6-SF-8lc"/>
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="Net-5P-gmy">
+                            <connections>
+                                <action selector="addPhotos:" destination="wBS-gG-pI7" id="eWi-SN-Rvr"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="groupCollectionView" destination="gvf-z0-hoj" id="UVw-BK-48d"/>

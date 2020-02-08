@@ -40,5 +40,17 @@ class GroupViewController: UIViewController, UICollectionViewDataSource, UIColle
         self.navigationController?.pushViewController(galleryVC, animated: true)
     }
     
-
+    @IBAction func addPhotos(_ sender: Any) {
+    }
+    
+    @IBAction func sendPhotos(_ sender: Any) {
+    }
+    
+    @IBAction func selectPhotos(_ sender: Any) {
+    }
+    
+    @IBAction func deletePhotos(_ sender: Any) {
+    }
+    
+    
 }

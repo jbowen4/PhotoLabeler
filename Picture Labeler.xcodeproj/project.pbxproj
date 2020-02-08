@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,8 @@
 		D09C8E3C23EB93B1000CB4DC /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09C8E3B23EB93B1000CB4DC /* GroupViewController.swift */; };
 		D09C8E3E23EB95BF000CB4DC /* GroupViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09C8E3D23EB95BF000CB4DC /* GroupViewCell.swift */; };
 		D09C8E4023EDCF6E000CB4DC /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09C8E3F23EDCF6E000CB4DC /* GalleryViewController.swift */; };
+		D09C8E4223EE20C7000CB4DC /* ImageSaveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09C8E4123EE20C7000CB4DC /* ImageSaveController.swift */; };
+		D09C8E4623EE791F000CB4DC /* PhotoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09C8E4523EE791F000CB4DC /* PhotoHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		D09C8E3B23EB93B1000CB4DC /* GroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
 		D09C8E3D23EB95BF000CB4DC /* GroupViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewCell.swift; sourceTree = "<group>"; };
 		D09C8E3F23EDCF6E000CB4DC /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
+		D09C8E4123EE20C7000CB4DC /* ImageSaveController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaveController.swift; sourceTree = "<group>"; };
+		D09C8E4523EE791F000CB4DC /* PhotoHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +70,6 @@
 				1B61186A1280B7D990B762CF /* Pods-Picture Labeler.debug.xcconfig */,
 				87BAF46399B14310AF51CF10 /* Pods-Picture Labeler.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -127,6 +130,8 @@
 				D093752023C6AEAB00F9CE44 /* HomeViewController.swift */,
 				D09C8E3B23EB93B1000CB4DC /* GroupViewController.swift */,
 				D09C8E3F23EDCF6E000CB4DC /* GalleryViewController.swift */,
+				D09C8E4123EE20C7000CB4DC /* ImageSaveController.swift */,
+				D09C8E4523EE791F000CB4DC /* PhotoHelper.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -248,11 +253,13 @@
 			files = (
 				D09C8E3C23EB93B1000CB4DC /* GroupViewController.swift in Sources */,
 				D093752123C6AEAB00F9CE44 /* HomeViewController.swift in Sources */,
+				D09C8E4623EE791F000CB4DC /* PhotoHelper.swift in Sources */,
 				D09C8E3E23EB95BF000CB4DC /* GroupViewCell.swift in Sources */,
 				D093751D23C6AEAB00F9CE44 /* AppDelegate.swift in Sources */,
 				D093753C23C7562800F9CE44 /* CollectionViewCell.swift in Sources */,
 				D09C8E4023EDCF6E000CB4DC /* GalleryViewController.swift in Sources */,
 				D093752723C6AEAB00F9CE44 /* Picture_Labeler.xcdatamodeld in Sources */,
+				D09C8E4223EE20C7000CB4DC /* ImageSaveController.swift in Sources */,
 				D093751F23C6AEAB00F9CE44 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
