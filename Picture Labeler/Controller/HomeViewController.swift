@@ -10,6 +10,7 @@ import UIKit
 
 import Photos
 import BSImagePicker
+import CoreData
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBOutlet weak var photoSearchBar: UISearchBar!
@@ -18,6 +19,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     var selectedAssets = [PHAsset]()
     var photoArray = [UIImage]()
+    
+    let imageHandler = ImageDAO(container: (UIApplication.shared.delegate as! AppDelegate).persistentContainer)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -120,6 +123,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 let data = thumbnail.jpegData(compressionQuality: 0.7)
                 let newImage = UIImage(data: data!)
                 self.photoArray.append(newImage! as UIImage)
+                
+                imageHandler.makeInternallyStoredImage(newImage!)
             }
         }
     }

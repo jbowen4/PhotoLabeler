@@ -21,6 +21,7 @@
 		D09C8E4023EDCF6E000CB4DC /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09C8E3F23EDCF6E000CB4DC /* GalleryViewController.swift */; };
 		D09C8E4223EE20C7000CB4DC /* ImageSaveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09C8E4123EE20C7000CB4DC /* ImageSaveController.swift */; };
 		D09C8E4623EE791F000CB4DC /* PhotoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09C8E4523EE791F000CB4DC /* PhotoHelper.swift */; };
+		D09C8E4823F8D97E000CB4DC /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09C8E4723F8D97E000CB4DC /* ImageStorage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		D09C8E3F23EDCF6E000CB4DC /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		D09C8E4123EE20C7000CB4DC /* ImageSaveController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaveController.swift; sourceTree = "<group>"; };
 		D09C8E4523EE791F000CB4DC /* PhotoHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoHelper.swift; sourceTree = "<group>"; };
+		D09C8E4723F8D97E000CB4DC /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				D093752523C6AEAB00F9CE44 /* Picture_Labeler.xcdatamodeld */,
+				D09C8E4723F8D97E000CB4DC /* ImageStorage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				D093752123C6AEAB00F9CE44 /* HomeViewController.swift in Sources */,
 				D09C8E4623EE791F000CB4DC /* PhotoHelper.swift in Sources */,
 				D09C8E3E23EB95BF000CB4DC /* GroupViewCell.swift in Sources */,
+				D09C8E4823F8D97E000CB4DC /* ImageStorage.swift in Sources */,
 				D093751D23C6AEAB00F9CE44 /* AppDelegate.swift in Sources */,
 				D093753C23C7562800F9CE44 /* CollectionViewCell.swift in Sources */,
 				D09C8E4023EDCF6E000CB4DC /* GalleryViewController.swift in Sources */,
