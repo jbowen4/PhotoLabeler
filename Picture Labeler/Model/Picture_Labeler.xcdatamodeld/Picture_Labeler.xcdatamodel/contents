@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19C57" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Collection" representedClassName="Collection" syncable="YES" codeGenerationType="class"/>
-    <entity name="Photo" representedClassName="Photo" syncable="YES" codeGenerationType="class">
-        <attribute name="blob" optional="YES" attributeType="Binary"/>
+    <entity name="ImageGroup" representedClassName="ImageGroup" syncable="YES" codeGenerationType="class">
+        <attribute name="imageArray" optional="YES" attributeType="Binary"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="Collection" positionX="-63" positionY="-18" width="128" height="43"/>
-        <element name="Photo" positionX="-54" positionY="-9" width="128" height="58"/>
+        <element name="ImageGroup" positionX="-63" positionY="-18" width="128" height="73"/>
     </elements>
 </model>

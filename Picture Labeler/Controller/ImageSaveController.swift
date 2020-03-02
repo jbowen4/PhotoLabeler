@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ImageSaveController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var imageScrollView: UIScrollView!
@@ -15,6 +16,9 @@ class ImageSaveController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var popupView: UIView!
     
     var imageArray = [UIImage]()
+    var cdArray: ImageArrayRepresentation?
+    
+    let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +27,7 @@ class ImageSaveController: UIViewController, UIScrollViewDelegate {
         
         imageScrollView.delegate = self
         
-        imageArray = [UIImage(named: "homework")!, UIImage(named: "homework")!]
+//        imageArray = [UIImage(named: "homework")!, UIImage(named: "homework")!]
         
         if imageArray.count > 1 {
             imagePageControl.isHidden = false
@@ -53,6 +57,22 @@ class ImageSaveController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func save(_ sender: Any) {
+        save(groupNameField.text!, cdArray!)
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func save(_ itemName: String, _ itemImages: ImageArrayRepresentation) {
+        let entity = NSEntityDescription.entity(forEntityName: "ImageGroup", in: context!)!
+        let item = NSManagedObject(entity: entity, insertInto: context)
+        item.setValue(itemName, forKey: "name")
+        item.setValue(cdArray, forKey: "imageArray")
+        
+        do {
+            try context!.save()
+        } catch let err as NSError {
+            print("Failed to save an item", err)
+        }
     }
     
 

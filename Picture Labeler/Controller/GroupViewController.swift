@@ -10,8 +10,9 @@ import UIKit
 import Photos
 import BSImagePicker
 import SwiftPhotoGallery
+import CoreData
 
-class GroupViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+class GroupViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SwiftPhotoGalleryDelegate, SwiftPhotoGalleryDataSource  {
     
     enum Mode {
         case view
@@ -23,6 +24,13 @@ class GroupViewController: UIViewController, UICollectionViewDataSource, UIColle
     @IBOutlet weak var sendButton: UIBarButtonItem!
     @IBOutlet weak var selectButton: UIBarButtonItem!
     @IBOutlet weak var deleteButton: UIBarButtonItem!
+    
+    let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
+    
+    var imageArray = [UIImage]()
+    var navTitle: String?
+    var cdArray: ImageArrayRepresentation?
+    var object: NSManagedObject?
     
     var testArray = [UIImage(named: "homework"), UIImage(named: "homework"), UIImage(named: "homework"), UIImage(named: "homework"), UIImage(named: "homework")]
     
@@ -61,16 +69,17 @@ class GroupViewController: UIViewController, UICollectionViewDataSource, UIColle
         groupCollectionView.delegate = self
         groupCollectionView.dataSource = self
         
+        self.title = navTitle
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return testArray.count
+        return imageArray.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = groupCollectionView.dequeueReusableCell(withReuseIdentifier: "photoGroupCell", for: indexPath) as! GroupViewCell
 
-        cell.photoImageView.image = testArray[indexPath.row]
+        cell.photoImageView.image = imageArray[indexPath.row]
         
         cell.layer.borderWidth = 0.5
         cell.layer.borderColor = UIColor.black.cgColor
@@ -83,8 +92,18 @@ class GroupViewController: UIViewController, UICollectionViewDataSource, UIColle
         switch mMode {
             case .view:
                 groupCollectionView.deselectItem(at: indexPath, animated: true)
-                let galleryVC = (UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "galleryVC") as? GalleryViewController)!
-                self.navigationController?.pushViewController(galleryVC, animated: true)
+//                let galleryVC = (UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "galleryVC") as? GalleryViewController)!
+//                self.navigationController?.pushViewController(galleryVC, animated: true)
+                let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
+
+                gallery.backgroundColor = UIColor.black
+                gallery.pageIndicatorTintColor = UIColor.gray.withAlphaComponent(0.5)
+                gallery.currentPageIndicatorTintColor = UIColor.white
+                gallery.hidePageControl = false
+
+                present(gallery, animated: true, completion: { () -> Void in
+                    gallery.currentPage = indexPath.item
+                })
             case .select:
                 dictionarySelectedIndexPath[indexPath] = true
         }
@@ -95,6 +114,20 @@ class GroupViewController: UIViewController, UICollectionViewDataSource, UIColle
             dictionarySelectedIndexPath[indexPath] = false
         }
     }
+    
+    func numberOfImagesInGallery(gallery: SwiftPhotoGallery) -> Int {
+        return imageArray.count
+    }
+
+    func imageInGallery(gallery: SwiftPhotoGallery, forIndex: Int) -> UIImage? {
+        return imageArray[forIndex]
+    }
+
+
+    func galleryDidTapToClose(gallery: SwiftPhotoGallery) {
+        dismiss(animated: true, completion: nil)
+    }
+       
     
     @IBAction func addPhotos(_ sender: Any) {
         let actionSheet = UIAlertController(title: "Photo Source", message: "Choose a Source", preferredStyle: .actionSheet)
@@ -120,6 +153,8 @@ class GroupViewController: UIViewController, UICollectionViewDataSource, UIColle
                     self.selectedAssets.append(assets[i])
                 }
                 self.convertAssetToImages()
+                
+                self.save()
             }, completion: nil)
         }))
 
@@ -147,8 +182,11 @@ class GroupViewController: UIViewController, UICollectionViewDataSource, UIColle
         }
         
         for i in deleteNeededIndexPaths.sorted(by: { $0.item > $1.item }) {
-            testArray.remove(at: i.item)
+            imageArray.remove(at: i.item)
         }
+        
+        cdArray = imageArray.coreDataRepresentation()
+        save()
         
         groupCollectionView.deleteItems(at: deleteNeededIndexPaths)
         dictionarySelectedIndexPath.removeAll()
@@ -168,8 +206,19 @@ class GroupViewController: UIViewController, UICollectionViewDataSource, UIColle
                 })
                 let data = thumbnail.jpegData(compressionQuality: 0.7)
                 let newImage = UIImage(data: data!)
-                self.photoArray.append(newImage! as UIImage)
+                self.imageArray.append(newImage! as UIImage)
+                
+                cdArray = imageArray.coreDataRepresentation()
             }
+        }
+    }
+    
+    func save() {
+        object?.setValue(cdArray, forKey: "imageArray")
+        do {
+            try context!.save()
+        } catch let err as NSError {
+            print("Failed to save an item", err)
         }
     }
     
