@@ -15,10 +15,31 @@ import CoreData
 typealias ImageArray = [UIImage]
 typealias ImageArrayRepresentation = Data
 
-class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UISearchBarDelegate {
     @IBOutlet weak var photoSearchBar: UISearchBar!
     @IBOutlet weak var photoCollectionView: UICollectionView!
     @IBOutlet weak var addPhotoButton: UIButton!
+    @IBOutlet weak var doneButton: UIBarButtonItem!
+    
+    enum Mode {
+        case view
+        case delete
+    }
+    
+    var mMode: Mode = .view {
+        didSet {
+            switch mMode {
+            case .view:
+                doneButton.isEnabled = false
+                doneButton.title = nil
+                print("view")
+            case .delete:
+                doneButton.isEnabled = true
+                doneButton.title = "Done"
+                print("delete")
+            }
+        }
+    }
     
     var selectedAssets = [PHAsset]()
     var photoArray = [UIImage]()
@@ -27,20 +48,23 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     
     var groups = [ImageGroup]()
-    
-//    let imageHandler = ImageDAO(container: (UIApplication.shared.delegate as! AppDelegate).persistentContainer)
+    var realData = [ImageGroup]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        doneButton.isEnabled = false
+        doneButton.title = nil
+                
         photoCollectionView.delegate = self
         photoCollectionView.dataSource = self
+        photoSearchBar.delegate = self
         
         let request : NSFetchRequest<ImageGroup> = ImageGroup.fetchRequest()
         do{groups = (try context?.fetch(request))!}
         catch {}
         
-        photoCollectionView.reloadData()
+        realData = groups
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -52,7 +76,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         let imgArray = groups[indexPath.row].imageArray?.imageArray()
         
-        var image: UIImage = (imgArray!.count > 0 ? imgArray![0] : UIImage(named: "homework"))!
+        let image: UIImage = (imgArray!.count > 0 ? imgArray![0] : UIImage(named: "homework"))!
+        
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(sender:)))
+        cell.addGestureRecognizer(longPressRecognizer)
         
         cell.photoImageView.image = image
         cell.photoDescription.text = groups[indexPath.row].name
@@ -63,11 +90,16 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let groupVC = (UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "groupVC") as? GroupViewController)!
-        groupVC.imageArray = (groups[indexPath.row].imageArray?.imageArray())!
-        groupVC.navTitle = groups[indexPath.row].name
-        groupVC.object = groups[indexPath.row]
-        self.navigationController?.pushViewController(groupVC, animated: true)
+        switch mMode {
+        case .view:
+            let groupVC = (UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "groupVC") as? GroupViewController)!
+            groupVC.imageArray = (groups[indexPath.row].imageArray?.imageArray())!
+            groupVC.navTitle = groups[indexPath.row].name
+            groupVC.object = groups[indexPath.row]
+            self.navigationController?.pushViewController(groupVC, animated: true)
+        case.delete:
+            editGroup(index: indexPath)
+        }
     }
     
     @IBAction func chooseImages(_ sender: Any) {
@@ -142,9 +174,32 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-}
-
-extension HomeViewController {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.groups.removeAll()
+            
+        for item in self.realData {
+            if (item.name!.lowercased().contains(photoSearchBar.searchTextField.text!.lowercased())) {
+                self.groups.append(item)
+            }
+        }
+        
+        print(photoSearchBar.searchTextField.text!)
+                    
+        if (photoSearchBar.text!.isEmpty) {
+            self.groups = self.realData
+        }
+        
+        self.photoCollectionView.reloadData()
+    }
+    
+    @objc func longPressed(sender: UILongPressGestureRecognizer) {
+        mMode = .delete
+    }
+    
+    @IBAction func doneDelete(_ sender: Any) {
+        mMode = .view
+    }
+    
     func formatCell(cell: UICollectionViewCell) {
         cell.contentView.layer.cornerRadius = 15
         cell.layer.cornerRadius = 15
@@ -158,12 +213,92 @@ extension HomeViewController {
         cell.layer.shadowOpacity = 1
         cell.layer.masksToBounds = false
     }
-}
+    
+    func editGroup(index: IndexPath) {
+        let editAction = UIAlertAction(title: "Edit", style: .default) { (action) in
+            self.edit(index: index)
+        }
+        let destroyAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
+            self.delete(index: index)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel",
+                  style: .cancel) { (action) in
+        }
+             
+        let alert = UIAlertController(title: "Edit this image(s)",
+                    message: "",
+                    preferredStyle: .actionSheet)
+        alert.addAction(editAction)
+        alert.addAction(destroyAction)
+        alert.addAction(cancelAction)
+             
+        self.present(alert, animated: true)
+    }
+    
+    func edit(index: IndexPath) {
+        let item = groups[index.row]
 
-extension HomeViewController {
-    func makeNewCollection(images: ImageArrayRepresentation) {
+        var nameField = UITextField()
+        
+        let menu = UIAlertController(title: "Edit Name", message: "Current Name: \(item.name ?? "")", preferredStyle: .alert)
+        
+        menu.addTextField { (menuTextField) in
+            menuTextField.placeholder = "Name"
+            menuTextField.addTarget(self, action: #selector(self.textChanged), for: .editingChanged)
+            
+            nameField = menuTextField
+        }
+        let save = UIAlertAction(title: "Save", style: .default) { (action) in
+            item.name = nameField.text!
+            
+            do {
+                try self.self.context?.save()
+            } catch {}
+            
+            self.photoCollectionView.reloadData()
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .default) { (action) in
+            return
+        }
+        menu.addAction(cancel)
+        menu.addAction(save)
+        menu.actions[1].isEnabled = false
+        
+        self.present(menu, animated: true, completion: nil)
+    }
+    
+    func delete(index: IndexPath) {
+        let alert = UIAlertController(title: "Delete \(self.groups[index.row].name!)?", message: nil, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        alert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { (action) in
+            do {
+                self.context?.delete(self.groups[index.row])
+                try self.context?.save()
+            } catch {}
+            self.groups.remove(at: index.row)
+            self.realData = self.groups
+            self.photoCollectionView.reloadData()
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
         
     }
+    
+    @objc func textChanged(_ sender: Any) {
+           let tf = sender as! UITextField
+           var resp : UIResponder! = tf
+           while !(resp is UIAlertController) { resp = resp.next }
+           let alert = resp as! UIAlertController
+           if alert.textFields?.first?.text != "" && alert.textFields?.last?.text != "" {
+               alert.actions[1].isEnabled = true
+           } else {
+               alert.actions[1].isEnabled = false
+           }
+       }
+    
+    
 }
 
 extension Array where Element: UIImage {

@@ -92,6 +92,9 @@
                                     <constraint firstAttribute="height" constant="44" id="YOQ-LH-NBr"/>
                                 </constraints>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="QtM-0g-QeV" id="M02-9q-xxH"/>
+                                </connections>
                             </searchBar>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -112,11 +115,18 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ctl-eC-kzd"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Photo Labeler" id="2ES-6k-P3B"/>
+                    <navigationItem key="navigationItem" title="Photo Labeler" id="2ES-6k-P3B">
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="C0V-j1-IU7">
+                            <connections>
+                                <action selector="doneDelete:" destination="QtM-0g-QeV" id="uS4-7d-E5O"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="addPhotoButton" destination="TLc-Sa-mMz" id="ozB-Vt-dAc"/>
+                        <outlet property="doneButton" destination="C0V-j1-IU7" id="tMv-iA-xe8"/>
                         <outlet property="photoCollectionView" destination="UcJ-sD-28x" id="HvV-xf-7hQ"/>
-                        <outlet property="photoSearchBar" destination="gzd-dz-TKj" id="Ow6-Fc-A5j"/>
+                        <outlet property="photoSearchBar" destination="CUy-nB-Ob9" id="qK2-8m-5Fy"/>
                         <segue destination="wBS-gG-pI7" kind="show" id="qgl-cN-MIH"/>
                     </connections>
                 </viewController>
