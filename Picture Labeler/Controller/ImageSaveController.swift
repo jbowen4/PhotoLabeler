@@ -9,7 +9,11 @@
 import UIKit
 import CoreData
 
-class ImageSaveController: UIViewController, UIScrollViewDelegate {
+protocol GroupDelegate {
+    func updateGroups()
+}
+
+class ImageSaveController: UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
     @IBOutlet weak var imageScrollView: UIScrollView!
     @IBOutlet weak var groupNameField: UITextField!
     @IBOutlet weak var imagePageControl: UIPageControl!
@@ -17,6 +21,10 @@ class ImageSaveController: UIViewController, UIScrollViewDelegate {
     
     var imageArray = [UIImage]()
     var cdArray: ImageArrayRepresentation?
+    
+    var homeVC: HomeViewController?
+    
+    var delegate : GroupDelegate? = nil
     
     let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     
@@ -26,9 +34,7 @@ class ImageSaveController: UIViewController, UIScrollViewDelegate {
         self.view.layer.cornerRadius = 15
         
         imageScrollView.delegate = self
-        
-//        imageArray = [UIImage(named: "homework")!, UIImage(named: "homework")!]
-        
+                
         if imageArray.count > 1 {
             imagePageControl.isHidden = false
             imagePageControl.numberOfPages = imageArray.count
@@ -44,6 +50,7 @@ class ImageSaveController: UIViewController, UIScrollViewDelegate {
             imageScrollView.contentSize.width = imageScrollView.frame.width * CGFloat(i + 1)
             imageScrollView.addSubview(imageView)
         }
+    
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -73,6 +80,12 @@ class ImageSaveController: UIViewController, UIScrollViewDelegate {
         } catch let err as NSError {
             print("Failed to save an item", err)
         }
+        
+        self.delegate?.updateGroups()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        groupNameField.resignFirstResponder()
     }
     
 

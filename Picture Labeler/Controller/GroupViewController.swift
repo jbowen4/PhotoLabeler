@@ -38,7 +38,7 @@ class GroupViewController: UIViewController, UICollectionViewDataSource, UIColle
     var photoArray = [UIImage]()
     
     var selectOn: Bool = false
-    
+        
     var mMode: Mode = .view {
         didSet {
             switch mMode {
@@ -70,6 +70,10 @@ class GroupViewController: UIViewController, UICollectionViewDataSource, UIColle
         groupCollectionView.dataSource = self
         
         self.title = navTitle
+        
+        let width = (view.frame.size.width - 2) / 3
+        let layout = groupCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.itemSize = CGSize(width: width, height: width)
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -155,6 +159,8 @@ class GroupViewController: UIViewController, UICollectionViewDataSource, UIColle
                 self.convertAssetToImages()
                 
                 self.save()
+                
+                self.groupCollectionView.reloadData()
             }, completion: nil)
         }))
 
@@ -164,7 +170,27 @@ class GroupViewController: UIViewController, UICollectionViewDataSource, UIColle
     }
     
     @IBAction func sendPhotos(_ sender: Any) {
-        mMode = mMode == .view ? .select : .view
+        var sendArray = [UIImage]()
+        
+        var deleteNeededIndexPaths: [IndexPath] = []
+        for (key, value) in dictionarySelectedIndexPath {
+            if value {
+                deleteNeededIndexPaths.append(key)
+            }
+        }
+        
+        for i in deleteNeededIndexPaths {
+            sendArray.append(imageArray[i.item])
+        }
+        
+        let activityViewController = UIActivityViewController(activityItems: sendArray, applicationActivities: nil)
+        
+        activityViewController.popoverPresentationController?.barButtonItem = sendButton
+        
+        present(activityViewController, animated: true, completion: {
+            self.mMode = self.mMode == .view ? .select : .view
+        })
+        
     }
     
     @IBAction func selectPhotos(_ sender: Any) {

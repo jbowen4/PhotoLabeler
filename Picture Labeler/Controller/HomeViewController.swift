@@ -15,7 +15,7 @@ import CoreData
 typealias ImageArray = [UIImage]
 typealias ImageArrayRepresentation = Data
 
-class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UISearchBarDelegate {
+class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UISearchBarDelegate, GroupDelegate {
     @IBOutlet weak var photoSearchBar: UISearchBar!
     @IBOutlet weak var photoCollectionView: UICollectionView!
     @IBOutlet weak var addPhotoButton: UIButton!
@@ -65,11 +65,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         catch {}
         
         realData = groups
+        
+        let width = (view.frame.size.width - 25) / 2
+        let layout = photoCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.itemSize = CGSize(width: width, height: width)
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return groups.count
     }
+    
+    
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = photoCollectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! CollectionViewCell
@@ -102,6 +108,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
     @IBAction func chooseImages(_ sender: Any) {
         
         let actionSheet = UIAlertController(title: "Photo Source", message: "Choose a Source", preferredStyle: .actionSheet)
@@ -123,6 +137,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }, cancel: { (assets) in
                 // Cancel
             }, finish: { (assets) in
+                self.selectedAssets = []
                 for i in 0..<assets.count {
                     self.selectedAssets.append(assets[i])
                 }
@@ -131,9 +146,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
                     let vc = self.storyboard?.instantiateViewController(identifier: "imageSave") as! ImageSaveController
                     vc.modalPresentationStyle = .overFullScreen
-//                    vc.modalTransitionStyle = .crossDissolve
                     vc.imageArray = self.photoArray
                     vc.cdArray = self.cdArray
+                    vc.delegate = self
                     self.present(vc, animated: true, completion: nil)
                 })
             }, completion: nil)
@@ -145,9 +160,22 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        self.photoArray = []
+        self.cdArray = nil
         let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
         
         picker.dismiss(animated: true, completion: nil)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+            let vc = self.storyboard?.instantiateViewController(identifier: "imageSave") as! ImageSaveController
+            vc.modalPresentationStyle = .overFullScreen
+            vc.view.center = self.view.center
+            vc.view.frame.origin.y -= 150
+            vc.imageArray = [image]
+            vc.cdArray = self.photoArray.coreDataRepresentation()
+            vc.delegate = self
+            self.present(vc, animated: true, completion: nil)
+        })
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -155,6 +183,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func convertAssetToImages() -> Void {
+        self.photoArray = []
+        self.cdArray = nil
         if selectedAssets.count != 0{
             for i in 0..<selectedAssets.count{
                 let manager = PHImageManager.default()
@@ -297,6 +327,38 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                alert.actions[1].isEnabled = false
            }
        }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.count == 0 {
+            self.photoSearchBar.endEditing(true)
+            searchBar.resignFirstResponder()
+        }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        photoSearchBar.endEditing(true)
+        photoSearchBar.resignFirstResponder()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.photoSearchBar.endEditing(true)
+        photoSearchBar.resignFirstResponder()
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        self.photoSearchBar.endEditing(true)
+        photoSearchBar.resignFirstResponder()
+    }
+    
+    func updateGroups() {
+        let request : NSFetchRequest<ImageGroup> = ImageGroup.fetchRequest()
+        do{groups = (try context?.fetch(request))!}
+        catch {}
+        
+        realData = groups
+        
+        self.photoCollectionView.reloadData()
+    }
     
     
 }
