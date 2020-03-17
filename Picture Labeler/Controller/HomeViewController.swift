@@ -55,6 +55,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         doneButton.isEnabled = false
         doneButton.title = nil
+        
+        addPhotoButton.layer.cornerRadius = addPhotoButton.frame.width / 2
                 
         photoCollectionView.delegate = self
         photoCollectionView.dataSource = self
@@ -163,15 +165,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.photoArray = []
         self.cdArray = nil
         let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        photoArray = [image]
         
         picker.dismiss(animated: true, completion: nil)
         
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
             let vc = self.storyboard?.instantiateViewController(identifier: "imageSave") as! ImageSaveController
             vc.modalPresentationStyle = .overFullScreen
-            vc.view.center = self.view.center
-            vc.view.frame.origin.y -= 150
-            vc.imageArray = [image]
+            vc.imageArray = self.photoArray
             vc.cdArray = self.photoArray.coreDataRepresentation()
             vc.delegate = self
             self.present(vc, animated: true, completion: nil)
@@ -212,9 +213,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.groups.append(item)
             }
         }
-        
-        print(photoSearchBar.searchTextField.text!)
-                    
+                            
         if (photoSearchBar.text!.isEmpty) {
             self.groups = self.realData
         }
@@ -369,7 +368,7 @@ extension Array where Element: UIImage {
         let CDataArray = NSMutableArray()
 
         for img in self {
-            guard let imageRepresentation = img.pngData() else {
+            guard let imageRepresentation = img.jpegData(compressionQuality: 1.0) else {
                 print("Unable to represent image as PNG")
                 return nil
             }
