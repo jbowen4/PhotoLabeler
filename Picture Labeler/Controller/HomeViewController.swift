@@ -82,9 +82,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = photoCollectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! CollectionViewCell
         
-        let imgArray = groups[indexPath.row].imageArray?.imageArray()
+        var image: UIImage!
         
-        let image: UIImage = (imgArray!.count > 0 ? imgArray![0] : UIImage(named: "homework"))!
+        if let imgArray = groups[indexPath.row].imageArray?.imageArray() {
+            image = (imgArray.count > 0 ? imgArray[0] : UIImage(named: "homework"))!
+        } else {
+            image = UIImage(named: "homework")
+        }
+        
         
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(sender:)))
         cell.addGestureRecognizer(longPressRecognizer)

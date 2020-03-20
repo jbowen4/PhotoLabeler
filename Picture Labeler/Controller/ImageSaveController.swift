@@ -34,7 +34,8 @@ class ImageSaveController: UIViewController, UIScrollViewDelegate, UITextFieldDe
         self.view.layer.cornerRadius = 15
         
         imageScrollView.delegate = self
-                
+        imageScrollView.contentSize.width = imageScrollView.frame.width * CGFloat(imageArray.count)
+                        
         if imageArray.count > 1 {
             imagePageControl.isHidden = false
             imagePageControl.numberOfPages = imageArray.count
@@ -47,7 +48,6 @@ class ImageSaveController: UIViewController, UIScrollViewDelegate, UITextFieldDe
             let xpos = self.imageScrollView.frame.width * CGFloat(i)
             imageView.frame = CGRect(x: xpos, y: 0, width: self.imageScrollView.frame.width, height: self.imageScrollView.frame.height)
             
-            imageScrollView.contentSize.width = imageScrollView.frame.width * CGFloat(i + 1)
             imageScrollView.addSubview(imageView)
         }
     

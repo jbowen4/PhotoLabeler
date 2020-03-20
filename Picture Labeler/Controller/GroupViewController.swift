@@ -169,6 +169,22 @@ class GroupViewController: UIViewController, UICollectionViewDataSource, UIColle
         self.present(actionSheet, animated: true, completion: nil)
     }
     
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        imageArray.append(image)
+        cdArray = imageArray.coreDataRepresentation()
+        
+        save()
+        
+        groupCollectionView.reloadData()
+        
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func sendPhotos(_ sender: Any) {
         var sendArray = [UIImage]()
         
